@@ -182,7 +182,7 @@ export default function Search({ onSearch }: SearchProps) {
                         key={tag}
                         variant="outline"
                         className={cn(
-                          "flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-lg border-white/10 bg-white/5",
+                          "flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-xl border-white/10 font-bold transition-all duration-300 hover:scale-105",
                           getTagColorClasses(tag, userTagColors)
                         )}
                       >
@@ -217,8 +217,11 @@ export default function Search({ onSearch }: SearchProps) {
                           onClick={() => addTag(tag)}
                           className="w-full text-left px-3 py-2.5 text-sm hover:bg-white/5 rounded-lg transition-colors flex items-center gap-3 group"
                         >
-                          <div className={cn("w-2.5 h-2.5 rounded-full shadow-sm", userTagColors[tag]?.background_color?.replace('bg-', 'bg-') || 'bg-accentBlue')} />
-                          <span className="text-muted-foreground group-hover:text-white transition-colors">{tag}</span>
+                          <div className={cn(
+                            "w-2.5 h-2.5 rounded-full shadow-sm",
+                            getTagColorClasses(tag, userTagColors).split(' ')[0] // Get background color
+                          )} />
+                          <span className="text-muted-foreground group-hover:text-white transition-colors font-bold">{tag}</span>
                         </button>
                       ))}
                     </div>
@@ -267,13 +270,15 @@ export default function Search({ onSearch }: SearchProps) {
         </form>
 
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-          {allTags.slice(0, 8).map(tag => (
+          {allTags.slice(0, 12).map(tag => (
             <Badge
               key={tag}
-              variant={selectedTags.includes(tag) ? "default" : "outline"}
+              variant="outline"
               className={cn(
-                "whitespace-nowrap cursor-pointer px-4 py-2 rounded-xl border-white/10 transition-all",
-                selectedTags.includes(tag) ? "bg-accentBlue text-white" : "bg-white/5 text-muted-foreground hover:text-white hover:bg-white/10"
+                "whitespace-nowrap cursor-pointer px-4 py-2 rounded-xl border-white/10 font-bold transition-all duration-300",
+                selectedTags.includes(tag)
+                  ? getTagColorClasses(tag, userTagColors)
+                  : "bg-white/5 text-muted-foreground hover:text-white hover:bg-white/10"
               )}
               onClick={() => selectedTags.includes(tag) ? removeTag(tag) : addTag(tag)}
             >

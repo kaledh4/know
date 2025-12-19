@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import type { KnowledgeEntry } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
+import { getTagColors, TagColor } from '@/lib/tagService';
+import { getTagColorClasses } from '@/lib/tag-utils';
+
 interface ReadingModeViewProps {
     entries: KnowledgeEntry[];
     initialIndex?: number;
@@ -17,8 +20,21 @@ export default function ReadingModeView({ entries, initialIndex = 0, onClose }: 
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
     const [fontSize, setFontSize] = useState<'sans' | 'serif'>('serif');
     const [isWide, setIsWide] = useState(false);
+    const [tagColors, setTagColors] = useState<Record<string, TagColor>>({});
 
     const currentEntry = entries[currentIndex];
+
+    useEffect(() => {
+        const loadColors = async () => {
+            try {
+                const colors = await getTagColors();
+                setTagColors(colors);
+            } catch (error) {
+                console.error('Failed to load tag colors:', error);
+            }
+        };
+        loadColors();
+    }, []);
 
     const nextEntry = () => {
         if (currentIndex < entries.length - 1) {
@@ -131,7 +147,10 @@ export default function ReadingModeView({ entries, initialIndex = 0, onClose }: 
                                     {currentEntry.tags.map(tag => (
                                         <span
                                             key={tag}
-                                            className="px-5 py-2 rounded-xl text-sm font-bold bg-white/5 border border-white/10 text-muted-foreground hover:text-white hover:bg-white/10 transition-colors cursor-default"
+                                            className={cn(
+                                                "px-5 py-2 rounded-xl text-sm font-bold transition-all duration-300 hover:scale-105 cursor-default border border-white/10",
+                                                getTagColorClasses(tag, tagColors)
+                                            )}
                                         >
                                             {tag}
                                         </span>

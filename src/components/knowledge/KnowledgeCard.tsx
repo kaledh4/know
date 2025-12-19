@@ -171,7 +171,7 @@ export default function KnowledgeCard({ entry, onUpdate, onDelete, tagColors = {
                 variant="outline"
                 className={cn(
                   getTagColorClasses(tag, tagColors),
-                  "px-4 py-1.5 text-xs font-bold rounded-xl transition-all duration-300 hover:scale-105 cursor-default border-white/10 bg-white/5"
+                  "px-4 py-1.5 text-sm font-bold rounded-xl transition-all duration-300 hover:scale-105 cursor-default border-white/10"
                 )}
               >
                 {tag}

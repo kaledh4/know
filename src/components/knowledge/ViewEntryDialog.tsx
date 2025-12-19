@@ -85,81 +85,96 @@ export default function ViewEntryDialog({ isOpen, setIsOpen, entry }: ViewEntryD
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[800px] max-h-[85vh] flex flex-col" dir={textDirection}>
-        <DialogHeader className="flex-shrink-0 pb-4">
-          <DialogTitle className={cn(
-            "text-2xl md:text-3xl font-bold tracking-tight text-primary flex items-center gap-3",
-            textDirection === 'rtl' ? "flex-row-reverse text-right font-arabic" : "font-headline"
+      <DialogContent className="sm:max-w-[850px] max-h-[90vh] flex flex-col bg-surface/95 backdrop-blur-2xl border-white/10 text-white rounded-[2.5rem] overflow-hidden p-0 shadow-2xl" dir={textDirection}>
+        <DialogHeader className="flex-shrink-0 p-10 pb-6 border-b border-white/5">
+          <div className={cn(
+            "flex items-start justify-between gap-6",
+            textDirection === 'rtl' ? "flex-row-reverse text-right" : ""
           )}>
-            <Icon className="h-7 w-7" />
-            {entry.title || 'Untitled'}
-          </DialogTitle>
+            <div className={cn(
+              "flex items-center gap-4",
+              textDirection === 'rtl' && "flex-row-reverse"
+            )}>
+              <div className="bg-accentBlue/20 p-3 rounded-2xl border border-accentBlue/30">
+                <Icon className="h-7 w-7 text-accentBlue" />
+              </div>
+              <DialogTitle className={cn(
+                "text-3xl md:text-4xl font-bold tracking-tight text-white",
+                textDirection === 'rtl' ? "font-arabic" : "font-headline"
+              )}>
+                {entry.title || 'Untitled'}
+              </DialogTitle>
+            </div>
+          </div>
           <DialogDescription className={cn(
-            "flex items-center gap-2 text-sm text-muted-foreground pt-2",
+            "flex items-center gap-2 text-base text-muted-foreground pt-4",
             textDirection === 'rtl' && "flex-row-reverse"
           )}>
-            <span>Added {timeAgo}</span>
+            <span className="font-medium">Added {timeAgo}</span>
           </DialogDescription>
         </DialogHeader>
 
         <div className={cn(
-          "flex-1 overflow-y-auto space-y-4",
-          textDirection === 'rtl' ? "pl-2 pr-2" : "pr-2 pl-2"
+          "flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar",
+          textDirection === 'rtl' ? "text-right" : "text-left"
         )}>
-          {/* Content */}
-          <div className="space-y-3">
+          {/* Content Section */}
+          <div className="space-y-6">
             <div className={cn(
               "flex items-center justify-between",
               textDirection === 'rtl' && "flex-row-reverse"
             )}>
-              <h4 className="text-base font-semibold text-foreground">Content</h4>
+              <h4 className="text-xl font-bold text-white tracking-tight">Content</h4>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleCopyContent}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-muted-foreground hover:text-white hover:bg-white/5 rounded-xl transition-all"
               >
                 <Copy className="h-4 w-4" />
-                Copy
+                Copy Content
               </Button>
             </div>
-            <div className="rounded-lg border border-white/10 bg-card/40 backdrop-blur-sm p-5 max-h-96 overflow-y-auto">
+            <div className="rounded-[1.5rem] border border-white/5 bg-white/5 p-8 shadow-inner">
               <p className={cn(
-                "text-[15px] leading-loose text-foreground/95 whitespace-pre-wrap select-text",
-                textDirection === 'rtl' ? "text-right font-arabic" : "font-body"
+                "text-xl leading-relaxed text-muted-foreground/90 whitespace-pre-wrap select-text",
+                textDirection === 'rtl' ? "font-arabic" : "font-body"
               )}>
                 {entry.content}
               </p>
             </div>
           </div>
 
-          {/* URL if it's a link */}
+          {/* URL Section */}
           {isLink && entry.url && (
-            <div className="space-y-2">
-              <h4 className="text-sm font-medium text-foreground">Source Link</h4>
-              <div className="flex items-center gap-2">
+            <div className="space-y-4">
+              <h4 className="text-xl font-bold text-white tracking-tight">Source Link</h4>
+              <div className={cn(
+                "flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5",
+                textDirection === 'rtl' && "flex-row-reverse"
+              )}>
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="lg"
                   onClick={() => window.open(entry.url, '_blank')}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 rounded-xl border-white/10 hover:bg-white/10 font-bold"
                 >
-                  <ExternalLink className="h-3 w-3" />
-                  Open Link
+                  <ExternalLink className="h-4 w-4" />
+                  Open Source
                 </Button>
-                <span className="text-xs text-muted-foreground truncate select-text">
+                <span className="text-sm text-muted-foreground truncate select-text font-medium">
                   {entry.url}
                 </span>
               </div>
             </div>
           )}
 
-          {/* Tags */}
+          {/* Tags Section */}
           {entry.tags && entry.tags.length > 0 && (
-            <div className="space-y-3">
-              <h4 className="text-base font-semibold text-foreground">Tags</h4>
+            <div className="space-y-6">
+              <h4 className="text-xl font-bold text-white tracking-tight">Tags</h4>
               <div className={cn(
-                "flex flex-wrap gap-2.5",
+                "flex flex-wrap gap-3",
                 textDirection === 'rtl' && "justify-end"
               )}>
                 {entry.tags.map(tag => (
@@ -168,7 +183,7 @@ export default function ViewEntryDialog({ isOpen, setIsOpen, entry }: ViewEntryD
                     variant="outline"
                     className={cn(
                       getTagColorClasses(tag, userTagColors),
-                      "px-3.5 py-1.5 text-sm font-medium transition-all duration-200 hover:scale-105 cursor-default"
+                      "px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 hover:scale-105 cursor-default border-white/10"
                     )}
                   >
                     {tag}
@@ -177,6 +192,15 @@ export default function ViewEntryDialog({ isOpen, setIsOpen, entry }: ViewEntryD
               </div>
             </div>
           )}
+        </div>
+
+        <div className="p-8 border-t border-white/5 bg-black/20 flex justify-end">
+          <Button
+            onClick={() => setIsOpen(false)}
+            className="bg-accentBlue hover:bg-accentBlue/80 text-white rounded-xl px-8 py-6 text-lg font-bold shadow-lg shadow-accentBlue/20 transition-all active:scale-95"
+          >
+            Close View
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

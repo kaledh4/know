@@ -23,12 +23,10 @@ export default function Logo({ className, size = 'md' }: LogoProps) {
         <Brain className={cn(sizeClasses.icon, 'text-primary animate-pulse')} style={{ animationDuration: '3s' }} />
       </div>
       <span className={cn(
-        'font-headline font-bold tracking-tight',
-        'bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent',
-        'drop-shadow-[0_0_10px_rgba(168,85,247,0.3)]',
+        'font-headline font-black tracking-tighter text-white',
         sizeClasses.text
       )}>
-        KnowledgeVerse
+        Knowledge<span className="text-accentBlue">Verse</span>
       </span>
     </div>
   );

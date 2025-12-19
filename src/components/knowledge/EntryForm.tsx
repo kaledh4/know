@@ -24,7 +24,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Spinner } from '../ui/spinner';
-import { X, Plus } from 'lucide-react';
+import { X, Plus, Edit } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
@@ -169,19 +169,19 @@ export default function EntryForm({ entry, onSuccess, initialData }: EntryFormPr
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pt-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base font-medium">Title (Optional)</FormLabel>
+              <FormLabel className="text-lg font-bold text-white mb-2 block">Title (Optional)</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Entry Title"
                   {...field}
                   className={cn(
-                    "bg-background/50 h-11 text-lg transition-all focus:ring-2 focus:ring-primary/20",
+                    "bg-white/5 border-white/10 h-14 text-xl rounded-xl transition-all focus:ring-2 focus:ring-accentBlue/20 focus:border-accentBlue/50",
                     isTitleArabic ? "font-arabic text-right" : "font-body"
                   )}
                 />
@@ -196,12 +196,12 @@ export default function EntryForm({ entry, onSuccess, initialData }: EntryFormPr
           name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base font-medium">Content</FormLabel>
+              <FormLabel className="text-lg font-bold text-white mb-2 block">Content</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Paste your text, links, or thoughts here..."
                   className={cn(
-                    "min-h-[160px] resize-y bg-background/50 text-base leading-relaxed p-4 transition-all focus:ring-2 focus:ring-primary/20",
+                    "min-h-[200px] resize-y bg-white/5 border-white/10 text-lg leading-relaxed p-6 rounded-xl transition-all focus:ring-2 focus:ring-accentBlue/20 focus:border-accentBlue/50",
                     isContentArabic ? "font-arabic text-right" : "font-body"
                   )}
                   {...field}
@@ -217,19 +217,17 @@ export default function EntryForm({ entry, onSuccess, initialData }: EntryFormPr
           name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base font-medium">Tags</FormLabel>
+              <FormLabel className="text-lg font-bold text-white mb-2 block">Tags</FormLabel>
               <FormControl>
-                <div className="space-y-4">
-                  {/* Manual tag input removed as per request */}
-
+                <div className="space-y-6">
                   {/* Selected Tags */}
                   {field.value.length > 0 && (
-                    <div className="flex flex-wrap gap-2.5 p-1">
+                    <div className="flex flex-wrap gap-3 p-1">
                       {field.value.map((tag) => (
                         <Badge
                           key={tag}
                           className={cn(
-                            "flex items-center gap-1.5 cursor-default",
+                            "flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-xl cursor-default border-white/10",
                             getTagColorClasses(tag, userTagColors)
                           )}
                           variant="outline"
@@ -238,9 +236,9 @@ export default function EntryForm({ entry, onSuccess, initialData }: EntryFormPr
                           <button
                             type="button"
                             onClick={() => removeTag(tag)}
-                            className="ml-1 hover:bg-white/20 rounded-full p-0.5 transition-colors"
+                            className="ml-1 hover:bg-white/20 rounded-full p-1 transition-colors"
                           >
-                            <X className="h-3.5 w-3.5" />
+                            <X className="h-4 w-4" />
                           </button>
                         </Badge>
                       ))}
@@ -249,20 +247,21 @@ export default function EntryForm({ entry, onSuccess, initialData }: EntryFormPr
 
                   {/* Suggested Tags */}
                   {suggestedTags.length > 0 && (
-                    <div className="space-y-2.5 pt-2">
-                      <p className="text-sm font-medium text-muted-foreground">Suggested Tags:</p>
-                      <ScrollArea className="h-28 w-full rounded-lg border border-white/10 bg-card/30 backdrop-blur-sm p-3">
-                        <div className="flex flex-wrap gap-2.5">
+                    <div className="space-y-4">
+                      <p className="text-sm font-black tracking-widest uppercase text-muted-foreground">Suggested Tags</p>
+                      <ScrollArea className="h-40 w-full rounded-2xl border border-white/5 bg-white/5 p-4 custom-scrollbar">
+                        <div className="flex flex-wrap gap-3">
                           {suggestedTags.map((tag) => (
                             <Badge
                               key={tag.name}
                               variant="outline"
                               className={cn(
-                                "cursor-pointer transition-all duration-200 hover:scale-105",
+                                "px-4 py-2 text-sm font-bold rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 border-white/10",
                                 getTagColorClasses(tag.name, userTagColors)
                               )}
                               onClick={() => addTag(tag.name)}
                             >
+                              <Plus className="mr-1.5 h-3.5 w-3.5" />
                               {tag.name}
                             </Badge>
                           ))}
@@ -277,10 +276,16 @@ export default function EntryForm({ entry, onSuccess, initialData }: EntryFormPr
           )}
         />
 
-        <Button type="submit" className="w-full sm:w-auto h-11 px-8 text-base font-medium" disabled={isLoading}>
-          {isLoading && <Spinner className="mr-2" />}
-          {entry ? 'Save Changes' : 'Add to Vault'}
-        </Button>
+        <div className="pt-4">
+          <Button
+            type="submit"
+            className="w-full h-16 text-xl font-bold rounded-2xl bg-accentBlue hover:bg-accentBlue/80 text-white shadow-xl shadow-accentBlue/20 transition-all active:scale-95"
+            disabled={isLoading}
+          >
+            {isLoading ? <Spinner className="mr-3 h-6 w-6" /> : (entry ? <Edit className="mr-3 h-6 w-6" /> : <Plus className="mr-3 h-6 w-6" />)}
+            {entry ? 'Save Changes' : 'Add to Vault'}
+          </Button>
+        </div>
       </form>
     </Form>
   );

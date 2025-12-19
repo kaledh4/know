@@ -10,7 +10,7 @@ export function getTagColorClasses(
     // First check if user has custom color from Supabase
     if (tagColors[tagName]) {
         const colors = tagColors[tagName];
-        return `${colors.background_color} ${colors.border_color} ${colors.text_color} font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90`;
+        return `${colors.background_color} ${colors.border_color} ${colors.text_color}`;
     }
 
     // Fallback to default color scheme
@@ -22,16 +22,16 @@ export function getTagColorClasses(
  */
 function getDefaultTagColor(tag: string): string {
     const colors = [
-        'bg-red-900/60 text-red-200 border-red-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-blue-900/60 text-blue-200 border-blue-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-green-900/60 text-green-200 border-green-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-amber-900/60 text-amber-200 border-amber-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-purple-900/60 text-purple-200 border-purple-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-pink-900/60 text-pink-200 border-pink-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-indigo-900/60 text-indigo-200 border-indigo-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-orange-900/60 text-orange-200 border-orange-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-teal-900/60 text-teal-200 border-teal-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
-        'bg-cyan-900/60 text-cyan-200 border-cyan-500/50 font-medium px-3.5 py-1.5 text-sm transition-all duration-200 hover:opacity-90',
+        'bg-red-500/10 text-red-400 border-red-500/20',
+        'bg-blue-500/10 text-blue-400 border-blue-500/20',
+        'bg-green-500/10 text-green-400 border-green-500/20',
+        'bg-amber-500/10 text-amber-400 border-amber-500/20',
+        'bg-purple-500/10 text-purple-400 border-purple-500/20',
+        'bg-pink-500/10 text-pink-400 border-pink-500/20',
+        'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+        'bg-orange-500/10 text-orange-400 border-orange-500/20',
+        'bg-teal-500/10 text-teal-400 border-teal-500/20',
+        'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
     ];
 
     let hash = 0;

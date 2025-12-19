@@ -9,7 +9,6 @@ interface DashboardGridProps {
     onNewEntry: () => void;
     onSearch: () => void;
     onAnalyze: () => void;
-    onViewHistory: () => void;
     onViewTags: () => void;
     entryCount: number;
 }
@@ -19,7 +18,6 @@ export default function DashboardGrid({
     onNewEntry,
     onSearch,
     onAnalyze,
-    onViewHistory,
     onViewTags,
     entryCount
 }: DashboardGridProps) {
@@ -135,7 +133,7 @@ export default function DashboardGrid({
             {/* Stats/Secondary Tiles */}
             <motion.div
                 variants={item}
-                className="md:col-span-2 rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-10 flex items-center gap-10 hover:border-white/20 transition-all duration-300"
+                className="md:col-span-3 rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-10 flex items-center gap-10 hover:border-white/20 transition-all duration-300"
             >
                 <div className="bg-accentBlue/10 p-6 rounded-[1.5rem] border border-accentBlue/20">
                     <BarChart3 className="text-accentBlue h-12 w-12" />
@@ -156,22 +154,9 @@ export default function DashboardGrid({
                 </div>
             </motion.div>
 
-            <motion.div
+            <motion.a
                 variants={item}
-                className="group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
-                onClick={onViewHistory}
-            >
-                <div className="bg-white/5 w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
-                    <History className="text-white h-7 w-7" />
-                </div>
-                <div>
-                    <h3 className="text-2xl font-bold text-white mb-2">History</h3>
-                    <p className="text-muted-foreground">Recent activity</p>
-                </div>
-            </motion.div>
-
-            <motion.div
-                variants={item}
+                href="https://kaledh4.github.io/knowledge-cleanN/customize-tags"
                 className="group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
             >
                 <div className="bg-white/5 w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
@@ -179,9 +164,9 @@ export default function DashboardGrid({
                 </div>
                 <div>
                     <h3 className="text-2xl font-bold text-white mb-2">Settings</h3>
-                    <p className="text-muted-foreground">Preferences & Account</p>
+                    <p className="text-muted-foreground">Customize Tags & App</p>
                 </div>
-            </motion.div>
+            </motion.a>
         </motion.div>
     );
 }
