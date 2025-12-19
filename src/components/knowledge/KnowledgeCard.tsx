@@ -90,28 +90,27 @@ export default function KnowledgeCard({ entry, onUpdate, onDelete, tagColors = {
       />
       <Card
         className={cn(
-          "glass-card flex h-full transform-gpu flex-col transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer relative overflow-hidden p-1 border group",
-          borderColor,
-          shadowColor,
-          "hover:shadow-lg"
+          "bg-surface/40 backdrop-blur-xl border border-white/10 rounded-[2rem] flex h-full transform-gpu flex-col transition-all duration-500 ease-out hover:-translate-y-2 cursor-pointer relative overflow-hidden p-2 group",
+          "hover:border-accentBlue/30 hover:shadow-2xl hover:shadow-accentBlue/10",
+          shadowColor
         )}
         onClick={handleCardClick}
         style={{ direction: textDirection } as React.CSSProperties}
       >
         {/* Decorative Stripe */}
         <div className={cn(
-          "absolute top-0 bottom-0 w-1.5 opacity-60 transition-opacity group-hover:opacity-100",
+          "absolute top-0 bottom-0 w-1.5 opacity-40 transition-opacity group-hover:opacity-100",
           textDirection === 'rtl' ? "left-0" : "right-0",
           stripeColor
         )} />
 
-        <CardHeader className="pb-3">
+        <CardHeader className="p-8 pb-4">
           <div className={cn(
-            "flex items-start justify-between gap-3",
+            "flex items-start justify-between gap-4",
             textDirection === 'rtl' && "flex-row-reverse"
           )}>
             <CardTitle className={cn(
-              "font-headline text-xl font-bold leading-tight line-clamp-2 tracking-tight",
+              "font-headline text-2xl font-bold leading-tight line-clamp-2 tracking-tight text-white group-hover:text-accentBlue transition-colors",
               textDirection === 'rtl' && "text-right font-arabic"
             )}>
               {entry.title || 'Untitled'}
@@ -121,48 +120,47 @@ export default function KnowledgeCard({ entry, onUpdate, onDelete, tagColors = {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 flex-shrink-0 hover:bg-white/10"
+                  className="h-10 w-10 flex-shrink-0 hover:bg-white/10 rounded-xl"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <MoreVertical className="h-4 w-4" />
+                  <MoreVertical className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="bg-surface/90 backdrop-blur-xl border-white/10 rounded-xl">
                 <DropdownMenuItem onClick={(e) => {
                   e.stopPropagation();
                   setIsEditDialogOpen(true);
-                }}>
+                }} className="hover:bg-white/5 cursor-pointer">
                   <Edit className="mr-2 h-4 w-4" /> Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={(e) => {
                   e.stopPropagation();
                   setIsDeleteDialogOpen(true);
-                }} className="text-destructive focus:text-destructive">
+                }} className="text-destructive focus:text-destructive hover:bg-destructive/10 cursor-pointer">
                   <Trash2 className="mr-2 h-4 w-4" /> Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
           <CardDescription className={cn(
-            "flex items-center pt-1.5 text-xs text-muted-foreground",
+            "flex items-center pt-2 text-sm text-muted-foreground",
             textDirection === 'rtl' && "flex-row-reverse"
           )}>
-            <Icon className={cn(
-              "h-3.5 w-3.5",
-              textDirection === 'rtl' ? "ml-2 mr-0" : "mr-2 ml-0"
-            )} />
+            <div className="bg-white/5 p-1.5 rounded-lg mr-2">
+              <Icon className="h-4 w-4" />
+            </div>
             <span>Added {timeAgo}</span>
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-grow pb-3">
+        <CardContent className="flex-grow p-8 pt-0 pb-6">
           <p className={cn(
-            "text-[15px] leading-relaxed text-foreground/90 line-clamp-3",
+            "text-lg leading-relaxed text-muted-foreground line-clamp-4",
             textDirection === 'rtl' && "text-right font-arabic"
           )}>
             {entry.content}
           </p>
         </CardContent>
-        <CardFooter className="pt-0">
+        <CardFooter className="p-8 pt-0">
           <div className={cn(
             "flex flex-wrap gap-2",
             textDirection === 'rtl' && "justify-end"
@@ -173,7 +171,7 @@ export default function KnowledgeCard({ entry, onUpdate, onDelete, tagColors = {
                 variant="outline"
                 className={cn(
                   getTagColorClasses(tag, tagColors),
-                  "px-3 py-1 text-xs transition-all duration-200 hover:scale-105 cursor-default"
+                  "px-4 py-1.5 text-xs font-bold rounded-xl transition-all duration-300 hover:scale-105 cursor-default border-white/10 bg-white/5"
                 )}
               >
                 {tag}

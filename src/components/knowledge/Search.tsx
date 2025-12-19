@@ -122,29 +122,29 @@ export default function Search({ onSearch }: SearchProps) {
     <div className="w-full search-container font-body">
       {/* Desktop Layout */}
       <div className="hidden md:block">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-3 items-center">
           <div className="relative flex-1">
             <form onSubmit={handleSearch}>
               <div className="relative">
-                <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <SearchIcon className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   id="search-input"
                   ref={searchInputRef}
-                  placeholder="Search..."
-                  className="w-full bg-background/50 pl-9 pr-9 h-10 transition-all focus:ring-2 focus:ring-primary/20"
+                  placeholder="Search your knowledge..."
+                  className="w-full bg-white/5 border-white/10 pl-12 pr-12 h-12 rounded-xl transition-all focus:ring-2 focus:ring-accentBlue/20 focus:border-accentBlue/50 text-lg"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                 />
                 {isLoading ? (
-                  <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground" />
+                  <Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-muted-foreground" />
                 ) : (
                   showClearButton && (
                     <button
                       type="button"
                       onClick={handleClear}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-white/10 hover:text-white transition-colors"
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-5 w-5" />
                     </button>
                   )
                 )}
@@ -154,83 +154,103 @@ export default function Search({ onSearch }: SearchProps) {
 
           <Popover open={tagPopoverOpen} onOpenChange={setTagPopoverOpen}>
             <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="h-10 px-3 border-white/10 hover:bg-white/5">
-                <TagsIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                <span className="mr-1">Tags</span>
+              <Button variant="outline" size="lg" className="h-12 px-5 border-white/10 bg-white/5 hover:bg-white/10 rounded-xl font-bold">
+                <TagsIcon className="h-5 w-5 mr-3 text-muted-foreground" />
+                <span className="mr-2">Tags</span>
                 {selectedTags.length > 0 && (
-                  <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs bg-primary/20 text-primary border-primary/20">
+                  <Badge variant="secondary" className="ml-1 px-2 py-0.5 text-xs bg-accentBlue text-white border-none rounded-lg">
                     {selectedTags.length}
                   </Badge>
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-80 p-0 border-white/10 bg-card/95 backdrop-blur-xl" align="start">
-              <div className="p-3">
-                <div className="space-y-3">
+            <PopoverContent className="w-96 p-4 border-white/10 bg-surface/95 backdrop-blur-2xl rounded-2xl shadow-2xl" align="end">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-white">Filter by Tags</h4>
                   {selectedTags.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {selectedTags.map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="outline"
-                          className={cn(
-                            "flex items-center gap-1 pl-2 pr-1 py-1",
-                            getTagColorClasses(tag, userTagColors)
-                          )}
-                        >
-                          {tag}
-                          <button
-                            onClick={() => removeTag(tag)}
-                            className="ml-1 hover:bg-white/20 rounded-full p-0.5 transition-colors"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => setSelectedTags([])} className="text-xs h-7 px-2 hover:bg-white/5">
+                      Clear All
+                    </Button>
                   )}
+                </div>
+
+                {selectedTags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pb-2 border-b border-white/5">
+                    {selectedTags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant="outline"
+                        className={cn(
+                          "flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-lg border-white/10 bg-white/5",
+                          getTagColorClasses(tag, userTagColors)
+                        )}
+                      >
+                        {tag}
+                        <button
+                          onClick={() => removeTag(tag)}
+                          className="ml-1 hover:bg-white/20 rounded-full p-0.5 transition-colors"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+
+                <div className="relative">
+                  <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
-                    placeholder="Search tags..."
+                    placeholder="Find tags..."
                     value={tagInputValue}
                     onChange={(e) => setTagInputValue(e.target.value)}
-                    className="bg-background/50 border-white/10"
+                    className="bg-white/5 border-white/10 pl-9 h-10 rounded-lg focus:ring-accentBlue/20"
                   />
-                  {filteredTags.length > 0 && (
-                    <div className="max-h-48 overflow-auto space-y-1 pr-1">
-                      {filteredTags.slice(0, 8).map((tag) => (
+                </div>
+
+                <div className="max-h-60 overflow-y-auto pr-1 custom-scrollbar">
+                  {filteredTags.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-1">
+                      {filteredTags.map((tag) => (
                         <button
                           key={tag}
                           onClick={() => addTag(tag)}
-                          className="w-full text-left px-3 py-2 text-sm hover:bg-white/5 rounded-md transition-colors flex items-center gap-2 group"
+                          className="w-full text-left px-3 py-2.5 text-sm hover:bg-white/5 rounded-lg transition-colors flex items-center gap-3 group"
                         >
-                          <div className={cn("w-2 h-2 rounded-full", userTagColors[tag]?.background_color?.replace('bg-', 'bg-') || 'bg-primary/50')} />
-                          {tag}
+                          <div className={cn("w-2.5 h-2.5 rounded-full shadow-sm", userTagColors[tag]?.background_color?.replace('bg-', 'bg-') || 'bg-accentBlue')} />
+                          <span className="text-muted-foreground group-hover:text-white transition-colors">{tag}</span>
                         </button>
                       ))}
                     </div>
-                  )}
-                  {filteredTags.length === 0 && tagInputValue && (
-                    <p className="text-sm text-muted-foreground text-center py-4">No tags found</p>
+                  ) : tagInputValue ? (
+                    <p className="text-sm text-muted-foreground text-center py-6">No tags match your search</p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground text-center py-6">Start typing to find tags</p>
                   )}
                 </div>
               </div>
             </PopoverContent>
           </Popover>
 
-          <Button onClick={() => handleSearch()} size="sm" className="h-10 px-6 font-medium" disabled={isLoading}>
-            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
+          <Button
+            onClick={() => handleSearch()}
+            size="lg"
+            className="h-12 px-8 font-bold bg-accentBlue hover:bg-accentBlue/80 text-white rounded-xl shadow-lg shadow-accentBlue/20 transition-all active:scale-95"
+            disabled={isLoading}
+          >
+            {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Search'}
           </Button>
         </div>
       </div>
 
       {/* Mobile Layout */}
-      <div className="block md:hidden space-y-3">
+      <div className="block md:hidden space-y-4">
         <form onSubmit={handleSearch}>
           <div className="relative">
-            <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <SearchIcon className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search..."
-              className="w-full bg-background/50 pl-9 pr-9 h-10"
+              className="w-full bg-white/5 border-white/10 pl-12 pr-12 h-12 rounded-xl"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -238,23 +258,22 @@ export default function Search({ onSearch }: SearchProps) {
               <button
                 type="button"
                 onClick={handleClear}
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-white/10"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5" />
               </button>
             )}
           </div>
         </form>
 
-        {/* Mobile Tag Selection - Simplified for now */}
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {allTags.slice(0, 5).map(tag => (
+        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+          {allTags.slice(0, 8).map(tag => (
             <Badge
               key={tag}
               variant={selectedTags.includes(tag) ? "default" : "outline"}
               className={cn(
-                "whitespace-nowrap cursor-pointer",
-                selectedTags.includes(tag) ? "" : "opacity-70 hover:opacity-100"
+                "whitespace-nowrap cursor-pointer px-4 py-2 rounded-xl border-white/10 transition-all",
+                selectedTags.includes(tag) ? "bg-accentBlue text-white" : "bg-white/5 text-muted-foreground hover:text-white hover:bg-white/10"
               )}
               onClick={() => selectedTags.includes(tag) ? removeTag(tag) : addTag(tag)}
             >
@@ -263,8 +282,12 @@ export default function Search({ onSearch }: SearchProps) {
           ))}
         </div>
 
-        <Button onClick={() => handleSearch()} className="w-full h-10" disabled={isLoading}>
-          {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Search'}
+        <Button
+          onClick={() => handleSearch()}
+          className="w-full h-12 rounded-xl bg-accentBlue hover:bg-accentBlue/80 text-white font-bold shadow-lg shadow-accentBlue/20"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : 'Search'}
         </Button>
       </div>
     </div>

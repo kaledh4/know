@@ -65,85 +65,119 @@ export async function initializeDefaultTags(userId: string): Promise<void> {
  * Get all tags used by the current user (merges used tags and defined tags)
  */
 export async function getUserTags(): Promise<Tag[]> {
-    const supabase = getSupabaseClient();
-    if (!supabase) throw new Error('Supabase not initialized');
+    const CACHE_KEY = 'kv-user-tags';
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error('Not authenticated');
-
-    // Initialize defaults if needed (fire and forget to not block UI too long, 
-    // but ideally we await if we want them to show up immediately on first load)
-    await initializeDefaultTags(user.id);
-
-    // Get all entries for the user to count usage
-    const { data: entries, error } = await supabase
-        .from('entries')
-        .select('tags')
-        .eq('user_id', user.id);
-
-    if (error) throw error;
-
-    // Count tag usage
-    const tagCounts: Record<string, number> = {};
-    entries?.forEach(entry => {
-        if (Array.isArray(entry.tags)) {
-            entry.tags.forEach((tag: string) => {
-                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-            });
+    // Try to get from cache first for immediate availability
+    if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            // Return cached data but continue to fetch fresh data in background
+            // This is a "stale-while-revalidate" pattern
+            setTimeout(() => fetchAndCacheTags(), 0);
+            return JSON.parse(cached);
         }
-    });
+    }
 
-    // Get custom colors/defined tags
-    const { data: colors } = await supabase
-        .from('tag_colors')
-        .select('tag_name')
-        .eq('user_id', user.id);
+    return fetchAndCacheTags();
 
-    // Ensure all defined tags are in the list, even if usage is 0
-    colors?.forEach(color => {
-        if (tagCounts[color.tag_name] === undefined) {
-            tagCounts[color.tag_name] = 0;
+    async function fetchAndCacheTags() {
+        const supabase = getSupabaseClient();
+        if (!supabase) throw new Error('Supabase not initialized');
+
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Not authenticated');
+
+        await initializeDefaultTags(user.id);
+
+        const { data: entries, error } = await supabase
+            .from('entries')
+            .select('tags')
+            .eq('user_id', user.id);
+
+        if (error) throw error;
+
+        const tagCounts: Record<string, number> = {};
+        entries?.forEach(entry => {
+            if (Array.isArray(entry.tags)) {
+                entry.tags.forEach((tag: string) => {
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                });
+            }
+        });
+
+        const { data: colors } = await supabase
+            .from('tag_colors')
+            .select('tag_name')
+            .eq('user_id', user.id);
+
+        colors?.forEach(color => {
+            if (tagCounts[color.tag_name] === undefined) {
+                tagCounts[color.tag_name] = 0;
+            }
+        });
+
+        const result = Object.entries(tagCounts).map(([name, usageCount]) => ({
+            name,
+            usageCount,
+        })).sort((a, b) => {
+            if (b.usageCount !== a.usageCount) return b.usageCount - a.usageCount;
+            return a.name.localeCompare(b.name);
+        });
+
+        if (typeof window !== 'undefined') {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(result));
         }
-    });
 
-    return Object.entries(tagCounts).map(([name, usageCount]) => ({
-        name,
-        usageCount,
-    })).sort((a, b) => {
-        // Sort by usage count desc, then by name asc
-        if (b.usageCount !== a.usageCount) return b.usageCount - a.usageCount;
-        return a.name.localeCompare(b.name);
-    });
+        return result;
+    }
 }
 
 /**
  * Get all tag colors for the current user
  */
 export async function getTagColors(): Promise<Record<string, TagColor>> {
-    const supabase = getSupabaseClient();
-    if (!supabase) throw new Error('Supabase not initialized');
+    const CACHE_KEY = 'kv-tag-colors';
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error('Not authenticated');
+    if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            setTimeout(() => fetchAndCacheColors(), 0);
+            return JSON.parse(cached);
+        }
+    }
 
-    const { data, error } = await supabase
-        .from('tag_colors')
-        .select('*')
-        .eq('user_id', user.id);
+    return fetchAndCacheColors();
 
-    if (error) throw error;
+    async function fetchAndCacheColors() {
+        const supabase = getSupabaseClient();
+        if (!supabase) throw new Error('Supabase not initialized');
 
-    const colors: Record<string, TagColor> = {};
-    data?.forEach(color => {
-        colors[color.tag_name] = {
-            tag_name: color.tag_name,
-            background_color: color.background_color,
-            border_color: color.border_color,
-            text_color: color.text_color,
-        };
-    });
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Not authenticated');
 
-    return colors;
+        const { data, error } = await supabase
+            .from('tag_colors')
+            .select('*')
+            .eq('user_id', user.id);
+
+        if (error) throw error;
+
+        const colors: Record<string, TagColor> = {};
+        data?.forEach(color => {
+            colors[color.tag_name] = {
+                tag_name: color.tag_name,
+                background_color: color.background_color,
+                border_color: color.border_color,
+                text_color: color.text_color,
+            };
+        });
+
+        if (typeof window !== 'undefined') {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(colors));
+        }
+
+        return colors;
+    }
 }
 
 /**

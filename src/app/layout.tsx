@@ -27,21 +27,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const basePath = '/knowledge-cleanN';
+
   return (
     <html lang="en" className={`dark ${ibmPlexArabic.variable} ${playfair.variable}`}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="KnowledgeVerse" />
         <meta name="application-name" content="KnowledgeVerse" />
-        <meta name="msapplication-TileColor" content="#9333ea" />
-        <meta name="theme-color" content="#9333ea" />
-        <link rel="manifest" href="/knowledge-cleanN/manifest.json" />
-        <link rel="apple-touch-icon" sizes="192x192" href="/knowledge-cleanN/static/icons/icon-192.png" />
-        <link rel="apple-touch-icon" sizes="512x512" href="/knowledge-cleanN/static/icons/icon-512.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/knowledge-cleanN/static/icons/icon-192.png" />
+        <meta name="msapplication-TileColor" content="#050505" />
+        <meta name="theme-color" content="#050505" />
+        <link rel="apple-touch-icon" sizes="192x192" href={`${basePath}/static/icons/icon-192.png`} />
+        <link rel="apple-touch-icon" sizes="512x512" href={`${basePath}/static/icons/icon-512.png`} />
+        <link rel="icon" type="image/png" sizes="192x192" href={`${basePath}/static/icons/icon-192.png`} />
+        <link rel="manifest" href={`${basePath}/manifest.json`} />
         <meta name="msapplication-config" content="none" />
         <style>
           {`
@@ -54,7 +56,7 @@ export default function RootLayout({
               position: fixed;
               top: 0;
               left: 0;
-              background-color: #0f0f23;
+              background-color: #050505;
               z-index: 9999;
             }
             body.loading .main-content {

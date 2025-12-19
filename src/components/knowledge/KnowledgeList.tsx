@@ -6,8 +6,9 @@ import { getSupabaseClient } from '@/lib/supabase';
 import KnowledgeCard from './KnowledgeCard';
 import { Button } from '../ui/button';
 import { Spinner } from '../ui/spinner';
-import { Inbox, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Inbox, ChevronLeft, ChevronRight, RefreshCw, Sparkles } from 'lucide-react';
 import { getTagColors, TagColor } from '@/lib/tagService';
+import { cn } from '@/lib/utils';
 
 type KnowledgeListProps = {
   searchResults: KnowledgeEntry[] | null;
@@ -28,6 +29,7 @@ interface UsePaginatedEntriesResult {
   goToPage: (page: number) => void;
   nextPage: () => void;
   prevPage: () => void;
+  totalCount: number;
 }
 
 function usePaginatedEntries(refreshKey: number): UsePaginatedEntriesResult {
@@ -104,6 +106,7 @@ function usePaginatedEntries(refreshKey: number): UsePaginatedEntriesResult {
     goToPage,
     nextPage,
     prevPage,
+    totalCount,
   };
 }
 
@@ -118,7 +121,8 @@ export default function KnowledgeList({ searchResults, onDataChange, refreshKey 
     hasPrevPage,
     nextPage,
     prevPage,
-    goToPage
+    goToPage,
+    totalCount
   } = usePaginatedEntries(refreshKey);
 
   const [userTagColors, setUserTagColors] = useState<Record<string, TagColor>>({});
@@ -156,11 +160,13 @@ export default function KnowledgeList({ searchResults, onDataChange, refreshKey 
 
   if (entriesToShow.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/30 py-20 text-center">
-        <Inbox className="h-16 w-16 text-muted-foreground/50" />
-        <h2 className="mt-4 font-headline text-2xl font-semibold">Your Vault is Empty</h2>
-        <p className="mt-2 text-muted-foreground">
-          {searchResults === null ? "Add your first piece of knowledge to get started." : "No results found for your search."}
+      <div className="flex flex-col items-center justify-center rounded-[2.5rem] border-2 border-dashed border-white/10 py-32 text-center bg-surface/20 backdrop-blur-xl">
+        <div className="bg-white/5 p-8 rounded-3xl mb-6">
+          <Inbox className="h-20 w-20 text-muted-foreground/30" />
+        </div>
+        <h2 className="font-headline text-3xl font-bold text-white mb-3">Your Vault is Empty</h2>
+        <p className="text-muted-foreground text-xl max-w-md">
+          {searchResults === null ? "Add your first piece of knowledge to get started on your journey." : "No results found for your search. Try different keywords or tags."}
         </p>
       </div>
     );
@@ -188,8 +194,8 @@ export default function KnowledgeList({ searchResults, onDataChange, refreshKey 
   };
 
   return (
-    <div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="space-y-12">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {entriesToShow.map(entry => (
           <KnowledgeCard
             key={entry.id}
@@ -203,49 +209,51 @@ export default function KnowledgeList({ searchResults, onDataChange, refreshKey 
 
       {/* Pagination Controls - only show for non-search results and when there are multiple pages */}
       {searchResults === null && totalPages > 1 && (
-        <div className="mt-8 flex items-center justify-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={prevPage}
-            disabled={!hasPrevPage}
-            className="flex items-center gap-1"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Previous
-          </Button>
+        <div className="flex flex-col items-center gap-6 pt-8 border-t border-white/5">
+          <div className="flex items-center justify-center gap-3">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={prevPage}
+              disabled={!hasPrevPage}
+              className="flex items-center gap-2 rounded-xl border-white/10 hover:bg-white/5 px-6"
+            >
+              <ChevronLeft className="h-5 w-5" />
+              Previous
+            </Button>
 
-          <div className="flex items-center gap-1">
-            {getPageNumbers().map(pageNum => (
-              <Button
-                key={pageNum}
-                variant={pageNum === currentPage ? "default" : "outline"}
-                size="sm"
-                onClick={() => goToPage(pageNum)}
-                className="min-w-[40px]"
-              >
-                {pageNum}
-              </Button>
-            ))}
+            <div className="flex items-center gap-2">
+              {getPageNumbers().map(pageNum => (
+                <Button
+                  key={pageNum}
+                  variant={pageNum === currentPage ? "default" : "outline"}
+                  size="lg"
+                  onClick={() => goToPage(pageNum)}
+                  className={cn(
+                    "min-w-[50px] rounded-xl font-bold transition-all",
+                    pageNum === currentPage ? "bg-accentBlue text-white shadow-lg shadow-accentBlue/20" : "border-white/10 hover:bg-white/5"
+                  )}
+                >
+                  {pageNum}
+                </Button>
+              ))}
+            </div>
+
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={nextPage}
+              disabled={!hasNextPage}
+              className="flex items-center gap-2 rounded-xl border-white/10 hover:bg-white/5 px-6"
+            >
+              Next
+              <ChevronRight className="h-5 w-5" />
+            </Button>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={nextPage}
-            disabled={!hasNextPage}
-            className="flex items-center gap-1"
-          >
-            Next
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-
-      {/* Show total count */}
-      {searchResults === null && totalPages > 0 && (
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          Showing {((currentPage - 1) * PAGE_SIZE) + 1}-{Math.min(currentPage * PAGE_SIZE, entries.length)} of {totalPages * PAGE_SIZE} entries
+          <div className="text-sm font-medium text-muted-foreground bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
+            Showing {((currentPage - 1) * PAGE_SIZE) + 1}-{Math.min(currentPage * PAGE_SIZE, totalCount)} of {totalCount} entries
+          </div>
         </div>
       )}
     </div>
