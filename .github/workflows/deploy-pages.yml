@@ -34,10 +34,12 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_OPENROUTER_API_KEY: ${{ secrets.NEXT_PUBLIC_OPENROUTER_API_KEY }}
         run: |
-          echo "🔨 Building with Supabase configuration from GitHub Secrets..."
+          echo "🔨 Building with configuration from GitHub Secrets..."
           echo "✓ NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:0:30}..."
           echo "✓ NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:0:20}..."
+          echo "✓ NEXT_PUBLIC_OPENROUTER_API_KEY: ${NEXT_PUBLIC_OPENROUTER_API_KEY:0:10}..."
           npm run build
 
       - name: Add .nojekyll file
