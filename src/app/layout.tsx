@@ -40,9 +40,9 @@ export default function RootLayout({
         <meta name="application-name" content="KnowledgeVerse" />
         <meta name="msapplication-TileColor" content="#050505" />
         <meta name="theme-color" content="#050505" />
-        <link rel="apple-touch-icon" sizes="192x192" href={`${basePath}/static/icons/icon-192.png`} />
-        <link rel="apple-touch-icon" sizes="512x512" href={`${basePath}/static/icons/icon-512.png`} />
-        <link rel="icon" type="image/png" sizes="192x192" href={`${basePath}/static/icons/icon-192.png`} />
+        <link rel="apple-touch-icon" sizes="1024x1024" href={`${basePath}/static/icons/icon-192.jpg`} />
+        <link rel="apple-touch-icon" sizes="1024x1024" href={`${basePath}/static/icons/icon-512.jpg`} />
+        <link rel="icon" type="image/jpeg" sizes="1024x1024" href={`${basePath}/static/icons/icon-192.jpg`} />
         <link rel="manifest" href={`${basePath}/manifest.json`} />
         <meta name="msapplication-config" content="none" />
         <style>
