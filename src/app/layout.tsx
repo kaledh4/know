@@ -44,6 +44,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="1024x1024" href={`${basePath}/static/icons/icon-512.jpg`} />
         <link rel="icon" type="image/jpeg" sizes="1024x1024" href={`${basePath}/static/icons/icon-192.jpg`} />
         <link rel="manifest" href={`${basePath}/manifest.json`} />
+        <link rel="serviceworker" href={`${basePath}/sw.js`} />
         <meta name="msapplication-config" content="none" />
         <style>
           {`

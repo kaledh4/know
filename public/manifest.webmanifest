@@ -67,16 +67,18 @@
   ],
   "screenshots": [
     {
-      "src": "/know/static/screenshots/screenshot1.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "src": "/know/static/icons/icon-512.jpg",
+      "sizes": "1024x1024",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "KnowledgeVerse Desktop"
     },
     {
-      "src": "/know/static/screenshots/screenshot2.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "src": "/know/static/icons/icon-512.jpg",
+      "sizes": "1024x1024",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "KnowledgeVerse Mobile"
     }
   ],
   "shortcuts": [
