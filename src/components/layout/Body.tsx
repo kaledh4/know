@@ -34,7 +34,7 @@ export default function Body({ children }: { children: React.ReactNode }) {
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', () => {
                 // Hardcoded base path for GitHub Pages
-                const basePath = '/knowledge-cleanN';
+                const basePath = '/know';
                 const swPath = basePath + '/sw.js';
                 
                 navigator.serviceWorker.register(swPath, { 

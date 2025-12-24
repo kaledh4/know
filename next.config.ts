@@ -48,8 +48,8 @@ const withPWA = require('next-pwa')({
 const nextConfig: NextConfig = {
   /* config options here */
   output: 'export',
-  basePath: '/knowledge-cleanN',
-  assetPrefix: '/knowledge-cleanN/',
+  basePath: '/know',
+  assetPrefix: '/know/',
   typescript: {
     ignoreBuildErrors: true,
   },

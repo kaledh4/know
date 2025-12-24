@@ -27,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const basePath = '/knowledge-cleanN';
+  const basePath = '/know';
 
   return (
     <html lang="en" className={`dark ${ibmPlexArabic.variable} ${playfair.variable}`}>

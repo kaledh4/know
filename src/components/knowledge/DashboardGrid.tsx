@@ -90,7 +90,7 @@ export default function DashboardGrid({
 
             <motion.div
                 variants={item}
-                className="group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex flex-col justify-between hover:border-accentPink/50 transition-all duration-300 hover:bg-surface/60"
+                className="hidden md:flex group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex-col justify-between hover:border-accentPink/50 transition-all duration-300 hover:bg-surface/60"
                 onClick={onAnalyze}
             >
                 <div className="bg-accentPink/20 w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-accentPink/30">
@@ -156,7 +156,7 @@ export default function DashboardGrid({
 
             <motion.a
                 variants={item}
-                href="https://kaledh4.github.io/knowledge-cleanN/customize-tags"
+                href="/know/customize-tags"
                 className="group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
             >
                 <div className="bg-white/5 w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
