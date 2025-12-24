@@ -46,7 +46,7 @@ export default function DashboardGrid({
             {/* Featured Reading Mode Tile */}
             <motion.div
                 variants={item}
-                className="md:col-span-2 md:row-span-2 relative group cursor-pointer overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-accentBlue/20 to-accentPurple/20 border border-white/10 p-10 flex flex-col justify-between hover:border-accentBlue/50 transition-all duration-500 shadow-2xl shadow-accentBlue/10"
+                className="md:col-span-2 md:row-span-2 relative group cursor-pointer overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-accentBlue/20 to-accentPurple/20 border border-white/10 p-6 md:p-10 flex flex-col justify-between hover:border-accentBlue/50 transition-all duration-500 shadow-2xl shadow-accentBlue/10"
                 onClick={onStartReading}
             >
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -76,7 +76,7 @@ export default function DashboardGrid({
             {/* Quick Actions */}
             <motion.div
                 variants={item}
-                className="group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex flex-col justify-between hover:border-accentPurple/50 transition-all duration-300 hover:bg-surface/60"
+                className="hidden md:flex group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex-col justify-between hover:border-accentPurple/50 transition-all duration-300 hover:bg-surface/60"
                 onClick={onNewEntry}
             >
                 <div className="bg-accentPurple/20 w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-accentPurple/30">
@@ -104,7 +104,7 @@ export default function DashboardGrid({
 
             <motion.div
                 variants={item}
-                className="group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
+                className="hidden md:flex group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
                 onClick={onSearch}
             >
                 <div className="bg-white/5 w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
@@ -118,7 +118,7 @@ export default function DashboardGrid({
 
             <motion.div
                 variants={item}
-                className="group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
+                className="hidden md:flex group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
                 onClick={onViewTags}
             >
                 <div className="bg-white/5 w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
@@ -133,7 +133,7 @@ export default function DashboardGrid({
             {/* Stats/Secondary Tiles */}
             <motion.div
                 variants={item}
-                className="md:col-span-3 rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-10 flex items-center gap-10 hover:border-white/20 transition-all duration-300"
+                className="hidden md:flex md:col-span-3 rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-10 items-center gap-10 hover:border-white/20 transition-all duration-300"
             >
                 <div className="bg-accentBlue/10 p-6 rounded-[1.5rem] border border-accentBlue/20">
                     <BarChart3 className="text-accentBlue h-12 w-12" />
@@ -157,7 +157,7 @@ export default function DashboardGrid({
             <motion.a
                 variants={item}
                 href="/know/customize-tags"
-                className="group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
+                className="hidden md:flex group cursor-pointer rounded-[2.5rem] bg-surface/40 backdrop-blur-xl border border-white/10 p-8 flex-col justify-between hover:border-white/30 transition-all duration-300 hover:bg-surface/60"
             >
                 <div className="bg-white/5 w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
                     <Settings className="text-white h-7 w-7" />
